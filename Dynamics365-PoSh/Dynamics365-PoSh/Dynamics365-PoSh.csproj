@@ -46,6 +46,10 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Management.Automation.dll.10.0.10586.0\lib\net40\System.Management.Automation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -60,11 +64,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="GetXrmConnection.cs" />
+    <Compile Include="MailboxActions\GetXrmMailbox.cs" />
     <Compile Include="Helpers\CookieBehavior.cs" />
     <Compile Include="Helpers\CookieReader.cs" />
     <Compile Include="Helpers\CrmConnection.cs" />
     <Compile Include="Helpers\WebAuthentication.cs" />
+    <Compile Include="MailboxActions\SetXrmMailboxApproval.cs" />
     <Compile Include="Models\Authentication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

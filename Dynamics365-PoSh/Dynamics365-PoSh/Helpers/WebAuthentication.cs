@@ -12,8 +12,6 @@ namespace Dynamics365_PoSh.Helpers
     {
         private const int DEFAULT_WEBBROWSER_POP_UP_WIDTH = 800;
         private const int DEFAULT_WEBBROWSER_POP_UP_HEIGHT = 600;
-        private static string CLAIM_HEADER_RETURN_URL = "X-Forms_Based_Auth_Return_Url";
-        private static string CLAIM_HEADER_AUTH_REQUIRED = "X-FORMS_BASED_AUTH_REQUIRED";
 
         [System.Runtime.InteropServices.DllImport("wininet.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
         public static extern bool InternetSetOption(int hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
