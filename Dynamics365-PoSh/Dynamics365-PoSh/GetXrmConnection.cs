@@ -1,10 +1,5 @@
 ﻿using Dynamics365_PoSh.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dynamics365_PoSh
 {
@@ -20,7 +15,12 @@ namespace Dynamics365_PoSh
 
             ServerUrl.TrimEnd('/');
             var webAuthCookies = WebAuthentication.GetAuthenticatedCookies(ServerUrl, Models.AuthenticationType.O365);
-            WriteObject(CrmConnection.GetConnection(ServerUrl, webAuthCookies));
+            var connection = CrmConnection.GetConnection(ServerUrl, webAuthCookies);
+
+            SessionState.PSVariable.Set("AuthCookies", webAuthCookies);
+            SessionState.PSVariable.Set("XrmService", connection);
+
+            WriteObject(connection);
         }
     }
 }

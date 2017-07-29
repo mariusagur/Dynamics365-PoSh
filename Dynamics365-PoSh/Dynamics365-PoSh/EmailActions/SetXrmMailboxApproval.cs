@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Management.Automation;
 
-namespace Dynamics365_PoSh.MailboxActions
+namespace Dynamics365_PoSh.EmailActions
 {
     [Cmdlet(VerbsCommon.Set, "XrmMailboxApproval", SupportsShouldProcess = true)]
     public class SetXrmMailboxApproval : PSCmdlet

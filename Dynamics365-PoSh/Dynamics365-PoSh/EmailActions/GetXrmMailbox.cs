@@ -1,14 +1,11 @@
 ﻿using Dynamics365_PoSh.Helpers;
+using Dynamics365_PoSh.Models;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Dynamics365_PoSh.MailboxActions
+namespace Dynamics365_PoSh.EmailActions
 {
     [Cmdlet(VerbsCommon.Get, "XrmMailbox", SupportsShouldProcess = true)]
     public class GetXrmMailbox : PSCmdlet
@@ -21,6 +18,9 @@ namespace Dynamics365_PoSh.MailboxActions
 
         [Parameter(HelpMessage = "Only show unapproved mailboxes")]
         public bool UnapprovedOnly = false;
+
+        [Parameter(HelpMessage = "Only show mailboxes with failed tests")]
+        public bool FailedOnly = false;
 
         protected override void ProcessRecord()
         {
@@ -45,6 +45,14 @@ namespace Dynamics365_PoSh.MailboxActions
             if (UnapprovedOnly)
             {
                 qe.Criteria.AddCondition(new ConditionExpression("isemailaddressapprovedbyo365admin", ConditionOperator.Equal, true));
+            }
+            if (FailedOnly)
+            {
+                var statusFilter = new FilterExpression(LogicalOperator.Or);
+                statusFilter.AddCondition(new ConditionExpression("incomingemailstatus", ConditionOperator.Equal, EmailStatus.Failure));
+                statusFilter.AddCondition(new ConditionExpression("outgoingemailstatus", ConditionOperator.Equal, EmailStatus.Failure));
+                statusFilter.AddCondition(new ConditionExpression("actstatus", ConditionOperator.Equal, EmailStatus.Failure));
+                qe.Criteria.AddFilter(statusFilter);
             }
 
             var result = Service.RetrieveMultiple(qe);

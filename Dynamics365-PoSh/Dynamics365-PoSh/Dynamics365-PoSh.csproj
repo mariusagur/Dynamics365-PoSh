@@ -64,14 +64,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocumentActions\SetXrmDocumentIntegration.cs" />
     <Compile Include="GetXrmConnection.cs" />
-    <Compile Include="MailboxActions\GetXrmMailbox.cs" />
+    <Compile Include="EmailActions\GetXrmMailbox.cs" />
     <Compile Include="Helpers\CookieBehavior.cs" />
+    <Compile Include="Helpers\CookieBrowser.cs" />
     <Compile Include="Helpers\CookieReader.cs" />
     <Compile Include="Helpers\CrmConnection.cs" />
     <Compile Include="Helpers\WebAuthentication.cs" />
-    <Compile Include="MailboxActions\SetXrmMailboxApproval.cs" />
+    <Compile Include="EmailActions\SetXrmMailboxApproval.cs" />
     <Compile Include="Models\Authentication.cs" />
+    <Compile Include="Models\Mailbox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
