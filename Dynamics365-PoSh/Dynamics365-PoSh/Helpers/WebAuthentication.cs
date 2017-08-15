@@ -1,6 +1,7 @@
 ﻿using Dynamics365_PoSh.Models;
 using System;
 using System.Net;
+using System.Web;
 using System.Windows.Forms;
 
 namespace Dynamics365_PoSh.Helpers
@@ -50,7 +51,7 @@ namespace Dynamics365_PoSh.Helpers
         public WebAuthentication(string targetSiteUrl, AuthenticationType authenticationType)
         {
             if (string.IsNullOrEmpty(targetSiteUrl))
-                throw new ArgumentException("SharePoint Site Url is required.");
+                throw new ArgumentException("MSDYN365 Site Url is required.");
 
             this.fldTargetSiteUrl = targetSiteUrl;
             this.authenticationType = authenticationType;
@@ -204,7 +205,7 @@ namespace Dynamics365_PoSh.Helpers
             loginUrl = response.ResponseUri.AbsoluteUri;
             return true;
         }
-
+        
         private CookieCollection GetCookiesFor(Uri url)
         {
             Uri uri = new Uri(url, "/");

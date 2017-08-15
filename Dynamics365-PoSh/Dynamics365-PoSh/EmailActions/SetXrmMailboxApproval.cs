@@ -1,4 +1,5 @@
 ﻿using Dynamics365_PoSh.Helpers;
+using Dynamics365_PoSh.Models;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using System;
@@ -18,7 +19,7 @@ namespace Dynamics365_PoSh.EmailActions
 
         [Parameter(Mandatory = true, ParameterSetName = "SetByEntity", ValueFromPipeline = true)]
         [Parameter(HelpMessage = "Entity repesentation of mailbox")]
-        public Entity Mailbox;
+        public XrmMailBox Mailbox;
 
         [Parameter(Mandatory = true, ParameterSetName = "SetByEmailAddress")]
         [Parameter(HelpMessage = "Unique email address for mailbox")]
@@ -30,13 +31,20 @@ namespace Dynamics365_PoSh.EmailActions
 
             if (Service == null)
             {
-                while (string.IsNullOrWhiteSpace(ServerUrl) && !Uri.TryCreate(ServerUrl, UriKind.Absolute, out Uri validationUri))
+                if (SessionState.PSVariable.Get("XrmService") != null)
                 {
-                    Host.UI.WriteLine(@"Please specify a valid url for your Dynamics365 environment");
-                    ServerUrl = Host.UI.ReadLine();
+                    Service = SessionState.PSVariable.Get("XrmService") as IOrganizationService;
                 }
-                var webCookies = WebAuthentication.GetAuthenticatedCookies(ServerUrl, Models.AuthenticationType.O365);
-                Service = CrmConnection.GetConnection(ServerUrl, webCookies);
+                else
+                {
+                    while (string.IsNullOrWhiteSpace(ServerUrl) && !Uri.TryCreate(ServerUrl, UriKind.Absolute, out Uri validationUri))
+                    {
+                        Host.UI.WriteLine(@"Please specify a valid url for your Dynamics365 environment");
+                        ServerUrl = Host.UI.ReadLine();
+                    }
+                    var webCookies = WebAuthentication.GetAuthenticatedCookies(ServerUrl, Models.AuthenticationType.O365);
+                    Service = CrmConnection.GetConnection(ServerUrl, webCookies);
+                }
             }
 
             if (Mailbox == null)
@@ -46,29 +54,26 @@ namespace Dynamics365_PoSh.EmailActions
                     Host.UI.WriteLine("Please enter valid email address");
                     EmailAddress = Host.UI.ReadLine();
                 }
-                var qe = new QueryExpression("mailbox")
+
+                Mailbox = new XrmMailBox
                 {
-                    ColumnSet = new ColumnSet(true)
+                    EmailAddress = EmailAddress
                 };
-
-                qe.Criteria.AddCondition(new ConditionExpression("emailaddress", ConditionOperator.Equal, EmailAddress));
-                var result = Service.RetrieveMultiple(qe);
-
-                if (result.Entities.Count() == 1)
+                var result = Mailbox.GetXrmMailBox(Service);
+                if (result == ResultCodes.OK)
                 {
-                    Mailbox = result.Entities.First();
+                    Mailbox.MailBox.Attributes["testemailconfigurationscheduled"] = true;
+                    Service.Update(Mailbox.MailBox);
                 }
-                else if (result.Entities.Count == 0)
+                else if (result == ResultCodes.MultipleResults)
                 {
-                    Host.UI.WriteLine($"No mailbox found with emailaddress: {EmailAddress}");
+                    Host.UI.WriteLine($"More than 1 mailbox found for email address: {EmailAddress}");
                 }
                 else
                 {
-                    Host.UI.WriteLine($"More than 1 mailbox found for emailaddress: {EmailAddress}");
+                    Host.UI.WriteLine($"No results found for email address: {EmailAddress}");
                 }
             }
-            Mailbox.Attributes["testemailconfigurationscheduled"] = true;
-            Service.Update(Mailbox);
         }
 
     }

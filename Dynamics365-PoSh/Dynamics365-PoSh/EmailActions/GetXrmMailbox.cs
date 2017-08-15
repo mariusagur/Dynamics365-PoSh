@@ -1,7 +1,6 @@
 ﻿using Dynamics365_PoSh.Helpers;
 using Dynamics365_PoSh.Models;
 using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Management.Automation;
 
@@ -12,51 +11,56 @@ namespace Dynamics365_PoSh.EmailActions
     {
         [Parameter(HelpMessage = "Existing connection of type IOrganizationService, see Get-XrmConnection")]
         public IOrganizationService Service;
-
         [Parameter(HelpMessage = "Server url to use for a one-off connection")]
         public string ServerUrl;
-
         [Parameter(HelpMessage = "Only show unapproved mailboxes")]
-        public bool UnapprovedOnly = false;
-
+        public SwitchParameter UnapprovedOnly;
         [Parameter(HelpMessage = "Only show mailboxes with failed tests")]
-        public bool FailedOnly = false;
+        public SwitchParameter FailedOnly;
+
+        [Parameter]
+        public string EmailAddress = "*";
 
         protected override void ProcessRecord()
         {
             base.ProcessRecord();
 
+            var auth = SessionState.PSVariable.Get("authenticated_connections").Value as Authentication;
+            if (auth == null)
+            {
+
+            }
             if (Service == null)
             {
-                while (string.IsNullOrWhiteSpace(ServerUrl) && !Uri.TryCreate(ServerUrl, UriKind.Absolute, out Uri validationUri))
+                if (SessionState.PSVariable.Get("XrmService") != null)
                 {
-                    Host.UI.WriteLine(@"Please specify a valid url for your Dynamics365 environment");
-                    ServerUrl = Host.UI.ReadLine();
+                    Service = SessionState.PSVariable.Get("XrmService") as IOrganizationService;
                 }
-                var webCookies = WebAuthentication.GetAuthenticatedCookies(ServerUrl, Models.AuthenticationType.O365);
-                Service = CrmConnection.GetConnection(ServerUrl, webCookies);
+                else
+                {
+                    while (string.IsNullOrWhiteSpace(ServerUrl) && !Uri.TryCreate(ServerUrl, UriKind.Absolute, out Uri validationUri))
+                    {
+                        Host.UI.WriteLine(@"Please specify a valid url for your Dynamics365 environment");
+                        ServerUrl = Host.UI.ReadLine();
+                    }
+                    SessionState.PSVariable.Set("CrmServerUrl", ServerUrl);
+                    var webCookies = WebAuthentication.GetAuthenticatedCookies(ServerUrl, Models.AuthenticationType.O365);
+                    Service = CrmConnection.GetConnection(ServerUrl, webCookies);
+                }
             }
 
-            var qe = new QueryExpression("mailbox")
-            {
-                ColumnSet = new ColumnSet(true),
-                TopCount = 1
-            };
+            var syncStatus = XrmMailBox.SynchronizationStatus.Any;
             if (UnapprovedOnly)
             {
-                qe.Criteria.AddCondition(new ConditionExpression("isemailaddressapprovedbyo365admin", ConditionOperator.Equal, true));
+                syncStatus = XrmMailBox.SynchronizationStatus.UnapprovedOnly;
             }
             if (FailedOnly)
             {
-                var statusFilter = new FilterExpression(LogicalOperator.Or);
-                statusFilter.AddCondition(new ConditionExpression("incomingemailstatus", ConditionOperator.Equal, EmailStatus.Failure));
-                statusFilter.AddCondition(new ConditionExpression("outgoingemailstatus", ConditionOperator.Equal, EmailStatus.Failure));
-                statusFilter.AddCondition(new ConditionExpression("actstatus", ConditionOperator.Equal, EmailStatus.Failure));
-                qe.Criteria.AddFilter(statusFilter);
+                syncStatus = XrmMailBox.SynchronizationStatus.FailedOnly;
             }
 
-            var result = Service.RetrieveMultiple(qe);
-            WriteObject(result.Entities);
+            var mailboxes = XrmMailBox.GetXrmMailBoxes(Service, EmailAddress, syncStatus);
+            WriteObject(mailboxes);
         }
     }
 }

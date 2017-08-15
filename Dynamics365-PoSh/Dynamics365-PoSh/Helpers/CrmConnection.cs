@@ -16,17 +16,20 @@ namespace Dynamics365_PoSh.Helpers
         /// <returns>Authenticated OrganizationWebProxyClient</returns>
         public static IOrganizationService GetConnection(string serverUrl, CookieCollection cookies, bool useStrongTypes = false)
         {
-            var cookieContainer = new CookieContainer();
-            foreach (Cookie cookie in cookies)
-            {
-                cookieContainer.Add(cookie);
-            }
             var serviceUrl = new Uri($"{serverUrl}/XRMServices/2011/Organization.svc/web");
             var client = new OrganizationWebProxyClient(serviceUrl, useStrongTypes);
-            var cookieBehavior = new CookieBehavior(cookieContainer);
-            client.Endpoint.EndpointBehaviors.Add(cookieBehavior);
+            client.SetAuthenticationCookies(cookies);
 
             return client;
+        }
+
+        public static IOrganizationService GetConnection(string serverUrl, string token, bool useStrongTypes = false)
+        {
+            return new OrganizationWebProxyClient(new Uri(serverUrl + "XRMServices/2011/Organization.svc/web"), useStrongTypes)
+            {
+                HeaderToken = token,
+                SdkClientVersion = "8.2"
+            };
         }
     }
 }
