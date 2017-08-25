@@ -34,9 +34,6 @@
     <Reference Include="Microsoft.Crm.Sdk.Proxy, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.8.2.0.2\lib\net452\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Identity.Client, Version=1.1.0.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Identity.Client.1.1.0-preview\lib\net45\Microsoft.Identity.Client.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.6.1.7600.16394\lib\net35\Microsoft.IdentityModel.dll</HintPath>
       <Private>True</Private>
@@ -49,6 +46,9 @@
     </Reference>
     <Reference Include="Microsoft.Xrm.Sdk, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.8.2.0.2\lib\net452\Microsoft.Xrm.Sdk.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,22 +73,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DocumentActions\SetXrmDocumentIntegration.cs" />
+    <Compile Include="ConnectionActions\ConnectDynamicsService.cs" />
+    <Compile Include="Helpers\SessionVariableFactory.cs" />
+    <Compile Include="Helpers\UrlFactory.cs" />
+    <Compile Include="DocumentActions\SetDynamicsDocumentIntegration.cs" />
     <Compile Include="Extensions\OrganizationWebProxyClientExtensions.cs" />
     <Compile Include="Extensions\XrmMailBoxExtensions.cs" />
-    <Compile Include="ConnectionActions\GetXrmConnection.cs" />
-    <Compile Include="EmailActions\GetXrmMailbox.cs" />
-    <Compile Include="Helpers\Authentication.cs" />
+    <Compile Include="ConnectionActions\GetDynamicsDataConnection.cs" />
+    <Compile Include="EmailActions\GetDynamicsMailbox.cs" />
+    <Compile Include="Helpers\OAuthHelper.cs" />
     <Compile Include="Helpers\CookieBehavior.cs" />
     <Compile Include="Helpers\CookieBrowser.cs" />
     <Compile Include="Helpers\CookieReader.cs" />
     <Compile Include="Helpers\CrmConnection.cs" />
-    <Compile Include="Helpers\DataCenterLocations.cs" />
-    <Compile Include="Helpers\OAuth.cs" />
-    <Compile Include="Helpers\WebAuthentication.cs" />
-    <Compile Include="EmailActions\SetXrmMailboxApproval.cs" />
-    <Compile Include="ManagementActions\Get-XrmInstances.cs" />
+    <Compile Include="Helpers\WebAuthHelper.cs" />
+    <Compile Include="EmailActions\SetDynamicsMailboxApproval.cs" />
+    <Compile Include="ManagementActions\GetDynamicsInstances.cs" />
     <Compile Include="Models\AuthenticationType.cs" />
+    <Compile Include="Models\BackupDetailsDTO.cs" />
+    <Compile Include="Models\BackupRequestDTO.cs" />
+    <Compile Include="Models\InstanceDTO.cs" />
     <Compile Include="Models\Mailbox.cs" />
     <Compile Include="Models\ResultCodes.cs" />
     <Compile Include="Models\XrmMailBox.cs" />

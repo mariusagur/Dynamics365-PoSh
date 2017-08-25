@@ -14,18 +14,17 @@ namespace Dynamics365_PoSh.Helpers
         /// <param name="cookies">Collection of authentication cookies</param>
         /// <param name="useStrongTypes">Use early bound types</param>
         /// <returns>Authenticated OrganizationWebProxyClient</returns>
-        public static IOrganizationService GetConnection(string serverUrl, CookieCollection cookies, bool useStrongTypes = false)
+        public static IOrganizationService GetConnection(Uri serverUrl, CookieCollection cookies, bool useStrongTypes = false)
         {
-            var serviceUrl = new Uri($"{serverUrl}/XRMServices/2011/Organization.svc/web");
-            var client = new OrganizationWebProxyClient(serviceUrl, useStrongTypes);
+            var client = new OrganizationWebProxyClient(serverUrl, useStrongTypes);
             client.SetAuthenticationCookies(cookies);
 
             return client;
         }
 
-        public static IOrganizationService GetConnection(string serverUrl, string token, bool useStrongTypes = false)
+        public static IOrganizationService GetConnection(Uri serverUrl, string token, bool useStrongTypes = false)
         {
-            return new OrganizationWebProxyClient(new Uri(serverUrl + "XRMServices/2011/Organization.svc/web"), useStrongTypes)
+            return new OrganizationWebProxyClient(serverUrl, useStrongTypes)
             {
                 HeaderToken = token,
                 SdkClientVersion = "8.2"

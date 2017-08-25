@@ -1,5 +1,4 @@
-﻿using Dynamics365_PoSh.Models;
-using Microsoft.Xrm.Sdk;
+﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using System.Linq;
 

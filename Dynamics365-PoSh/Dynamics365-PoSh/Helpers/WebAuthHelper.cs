@@ -9,7 +9,7 @@ namespace Dynamics365_PoSh.Helpers
     /// <summary>
     /// Provides means to authenticate a user via a pop up login form.
     /// </summary>
-    public class WebAuthentication : IDisposable
+    public class WebAuthHelper : IDisposable
     {
         private const int DEFAULT_WEBBROWSER_POP_UP_WIDTH = 800;
         private const int DEFAULT_WEBBROWSER_POP_UP_HEIGHT = 600;
@@ -48,7 +48,7 @@ namespace Dynamics365_PoSh.Helpers
         /// <param name="targetSiteUrl"></param>
         /// <param name="popUpWidth"></param>
         /// <param name="popUpHeight"></param>
-        public WebAuthentication(string targetSiteUrl, AuthenticationType authenticationType)
+        public WebAuthHelper(string targetSiteUrl, AuthenticationType authenticationType)
         {
             if (string.IsNullOrEmpty(targetSiteUrl))
                 throw new ArgumentException("MSDYN365 Site Url is required.");
@@ -174,7 +174,7 @@ namespace Dynamics365_PoSh.Helpers
         public static CookieCollection GetAuthenticatedCookies(string targetSiteUrl, AuthenticationType authenticationType)
         {
             CookieCollection cookies = null;
-            using (WebAuthentication webAuth = new WebAuthentication(targetSiteUrl, authenticationType))
+            using (WebAuthHelper webAuth = new WebAuthHelper(targetSiteUrl, authenticationType))
             {
                 cookies = webAuth.Show();
             }
