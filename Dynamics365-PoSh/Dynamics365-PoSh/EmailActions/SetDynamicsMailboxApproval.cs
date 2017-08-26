@@ -14,7 +14,7 @@ namespace Dynamics365_PoSh.EmailActions
 
         [Parameter(Mandatory = true, ParameterSetName = "SetByEntity", ValueFromPipeline = true)]
         [Parameter(HelpMessage = "Entity repesentation of mailbox")]
-        public XrmMailBox Mailbox;
+        public DynamicsMailBox Mailbox;
 
         public string EmailAddress;
 

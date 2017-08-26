@@ -34,17 +34,17 @@ namespace Dynamics365_PoSh.EmailActions
                     Connection = serviceObject.Value as IOrganizationService;
                 }
             }
-            var syncStatus = XrmMailBox.SynchronizationStatus.Any;
+            var syncStatus = DynamicsMailBox.SynchronizationStatus.Any;
             if (UnapprovedOnly)
             {
-                syncStatus = XrmMailBox.SynchronizationStatus.UnapprovedOnly;
+                syncStatus = DynamicsMailBox.SynchronizationStatus.UnapprovedOnly;
             }
             if (FailedOnly)
             {
-                syncStatus = XrmMailBox.SynchronizationStatus.FailedOnly;
+                syncStatus = DynamicsMailBox.SynchronizationStatus.FailedOnly;
             }
 
-            var mailboxes = XrmMailBox.GetXrmMailBoxes(Connection, EmailAddress, syncStatus);
+            var mailboxes = DynamicsMailBox.GetXrmMailBoxes(Connection, EmailAddress, syncStatus);
             WriteObject(mailboxes);
         }
     }

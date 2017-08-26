@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Dynamics365_PoSh.Models
 {
-    public class XrmMailBox
+    public class DynamicsMailBox
     {
         public string EmailAddress { get; set; }
         public string EntityType { get; set; }
@@ -16,7 +16,7 @@ namespace Dynamics365_PoSh.Models
             UnapprovedOnly,
             FailedOnly
         }
-        public static List<XrmMailBox> GetXrmMailBoxes(IOrganizationService service, string emailAddress, SynchronizationStatus filter = SynchronizationStatus.Any)
+        public static List<DynamicsMailBox> GetXrmMailBoxes(IOrganizationService service, string emailAddress, SynchronizationStatus filter = SynchronizationStatus.Any)
         {
             var qe = new QueryExpression("mailbox")
             {
@@ -38,7 +38,7 @@ namespace Dynamics365_PoSh.Models
 
             var result = service.RetrieveMultiple(qe);
 
-            return result.Entities.Select(e => new XrmMailBox
+            return result.Entities.Select(e => new DynamicsMailBox
             {
                 EmailAddress = e.Attributes["emailaddress"].ToString(),
                 MailBox = e,

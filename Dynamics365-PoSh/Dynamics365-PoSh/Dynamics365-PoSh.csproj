@@ -78,7 +78,7 @@
     <Compile Include="Helpers\UrlFactory.cs" />
     <Compile Include="DocumentActions\SetDynamicsDocumentIntegration.cs" />
     <Compile Include="Extensions\OrganizationWebProxyClientExtensions.cs" />
-    <Compile Include="Extensions\XrmMailBoxExtensions.cs" />
+    <Compile Include="Extensions\DynamicsMailBoxExtensions.cs" />
     <Compile Include="ConnectionActions\GetDynamicsDataConnection.cs" />
     <Compile Include="EmailActions\GetDynamicsMailbox.cs" />
     <Compile Include="Helpers\OAuthHelper.cs" />
@@ -89,13 +89,15 @@
     <Compile Include="Helpers\WebAuthHelper.cs" />
     <Compile Include="EmailActions\SetDynamicsMailboxApproval.cs" />
     <Compile Include="ManagementActions\GetDynamicsInstances.cs" />
+    <Compile Include="ManagementActions\GetDynamicsInstanceTypeInfo.cs" />
+    <Compile Include="ManagementActions\NewDynamicsBackup.cs" />
     <Compile Include="Models\AuthenticationType.cs" />
     <Compile Include="Models\BackupDetailsDTO.cs" />
     <Compile Include="Models\BackupRequestDTO.cs" />
     <Compile Include="Models\InstanceDTO.cs" />
     <Compile Include="Models\Mailbox.cs" />
     <Compile Include="Models\ResultCodes.cs" />
-    <Compile Include="Models\XrmMailBox.cs" />
+    <Compile Include="Models\DynamicsMailBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,15 +4,15 @@ using System.Linq;
 
 namespace Dynamics365_PoSh.Models
 {
-    public static partial class XrmMailBoxExtensions
+    public static partial class DynamicsMailBoxExtensions
     {
-        public static void ApproveMailBox(this XrmMailBox mailBox, IOrganizationService service)
+        public static void ApproveMailBox(this DynamicsMailBox mailBox, IOrganizationService service)
         {
             mailBox.MailBox.Attributes["testemailconfigurationscheduled"] = true;
             service.Update(mailBox.MailBox);
         }
 
-        public static ResultCodes GetXrmMailBox(this XrmMailBox mailBox, IOrganizationService service, bool unapprovedOnly = false, bool failedOnly = false)
+        public static ResultCodes GetXrmMailBox(this DynamicsMailBox mailBox, IOrganizationService service, bool unapprovedOnly = false, bool failedOnly = false)
         {
             var qe = new QueryExpression("mailbox")
             {
