@@ -38,7 +38,7 @@ namespace Dynamics365_PoSh.ConnectionActions
             base.ProcessRecord();
 
             Enum.TryParse(Location, out _location);
-            var serviceUrl = new Uri(string.Format(UrlFactory.BaseUrl, Organization, _location, UrlFactory.OrgServiceQueryPath));
+            var serviceUrl = new Uri(string.Format(UrlFactory.BaseUrl, Organization, (int)_location, UrlFactory.OrgServiceQueryPath));
 
             // OAuth authentication, data connection
             if (ParameterSetName == "oauthdata")
